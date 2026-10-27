@@ -6,6 +6,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.EditText
 import android.widget.ImageButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,8 +28,20 @@ class MainActivity : AppCompatActivity() {
         webView.webViewClient = object: WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+                urlEditText.setText(url)
             }
         }
+        goButton.setOnClickListener {
+            webView.loadUrl(parseUrl(parseUrl(urlEditText.text.toString())))
 
+        }
+
+
+    }
+    fun parseUrl(url: String): String {
+        if(url.startsWith("http://"))
+            return url
+        else
+            return "https://$url"
     }
 }
